@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "pg": "^8.12.0"
+  },
+  "scripts": {
+    "start": "node App.js",
+    "prodStart": "npm run generate && npm run migrate && run start"
+  }
+}

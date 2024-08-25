@@ -1,0 +1,13 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# production
+/build
+
+.env
+.env*.local
+.env*.prod
+/output
+
