@@ -5,7 +5,6 @@
     "pg": "^8.12.0"
   },
   "scripts": {
-    "start": "node App.js",
-    "prodStart": "npm run generate && npm run migrate && run start"
+    "start": "node App.js"
   }
 }
