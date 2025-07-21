@@ -5,7 +5,7 @@ Express.js backend using Docker and PostgreSQL.
 ## With Docker
 
 Execute `docker compose up --build` to build and start the project.
-If you want to stop and remove everything associated to this project from your docker, execute `docker compose down -v --rmi 'all'`
+If you want to stop and remove everything associated to this project from your docker, execute `docker compose down -v --rmi 'all'` or `docker-compose down --rmi all --volumes --remove-orphans`
 
 ## Tools
 

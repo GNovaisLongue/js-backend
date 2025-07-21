@@ -5,7 +5,7 @@ const {
   deleteProductsByIds,
 } = require("../models/Product");
 
-const indexP = async (req, res) => {
+const listProducts = async (req, res) => {
   try {
     const products = await getAllProducts();
     res.status(200).json({ message: products });
@@ -14,7 +14,7 @@ const indexP = async (req, res) => {
   }
 };
 
-const showP = async (req, res) => {
+const listProduct = async (req, res) => {
   try {
     const product = await getProductById(req.params.sku);
     res.json(product);
@@ -23,26 +23,27 @@ const showP = async (req, res) => {
   }
 };
 
-const createP = async (req, res) => {
+const addNewProduct = async (req, res) => {
   try {
-    await createProduct({
+    const result = await createProduct({
       sku: req.body.sku,
-      name: req.body.name,
+      product_name: req.body.product_name,
       price: req.body.price,
       product_type: req.body.product_type,
       product_attribute: req.body.product_attribute,
     });
-    if (result.error) {
-      res.status(result.status).json({ message: result.error });
+    if (result && result.error) {
+      res.status(result.status || 400).json({ message: result.error });
     }
-    // res.status(201).json(product);
+    return res
+      .status(201)
+      .json({ message: "Product created", product: result });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  res.redirect("/");
 };
 
-const deleteP = async (req, res) => {
+const removeProduct = async (req, res) => {
   try {
     const skus = req.body.product_ids;
     await deleteProductsByIds(skus);
@@ -50,7 +51,11 @@ const deleteP = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  res.redirect("/");
 };
 
-module.exports = { indexP, showP, createP, deleteP };
+module.exports = {
+  listProducts,
+  listProduct,
+  addNewProduct,
+  removeProduct,
+};

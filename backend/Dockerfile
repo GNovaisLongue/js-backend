@@ -1,21 +1,25 @@
-FROM node:18
+FROM node:22-alpine
 
-WORKDIR /app/backend/
+WORKDIR /usr/src/app
 
-COPY package*.json ./
+# https://docs.docker.com/reference/dockerfile/
 
-COPY ./wait-for-it.sh ./
-COPY ./startup.sh ./
+# Download dependencies as a separate step to take advantage of Docker's caching.
+# Leverage a cache mount to /root/.npm to speed up subsequent builds.
+# Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
+# into this layer.
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
 
-RUN chmod +x wait-for-it.sh
-RUN chmod +x startup.sh
+# Run the application as a non-root user.
+USER node
 
-RUN npm install
-
+# Copy the rest of the source files into the image.
 COPY . .
 
+# Expose the port that the application listens on.
 EXPOSE 3000
 
-# HOST AND PORT MUST MATCH ON APP DOCKERFILE AND ON .ENV FILE
-# USE THE NAME FOR THE DB SERVICE
-CMD ["./wait-for-it.sh", "postgres:5432", "--", "./startup.sh"]
+CMD ["npm", "run", "start"]

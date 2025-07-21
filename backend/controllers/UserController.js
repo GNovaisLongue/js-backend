@@ -5,7 +5,7 @@ const {
   deleteUser,
 } = require("../models/User");
 
-const indexU = async (req, res) => {
+const listUsers = async (req, res) => {
   try {
     const products = await getAllUsers();
     res.status(200).json({ message: products });
@@ -14,7 +14,7 @@ const indexU = async (req, res) => {
   }
 };
 
-const showU = async (req, res) => {
+const listUser = async (req, res) => {
   try {
     const product = await getUserById(req.params.id);
     res.json(product);
@@ -23,26 +23,28 @@ const showU = async (req, res) => {
   }
 };
 
-const createU = async (req, res) => {
+const addNewUser = async (req, res) => {
   try {
-    await createUser({
-      sku: req.body.sku,
-      name: req.body.name,
-      price: req.body.price,
-      product_type: req.body.product_type,
-      product_attribute: req.body.product_attribute,
+    const result = await createUser({
+      id: req.body.id,
+      username: req.body.username,
+      user_email: req.body.user_email,
+      user_role: req.body.user_role,
+      date_created: req.body.date_created,
+      date_last_updated: req.body.date_last_updated,
     });
-    if (result.error) {
-      res.status(result.status).json({ message: result.error });
+    if (result && result.error) {
+      res.status(result.status || 400).json({ message: result.error });
     }
-    // res.status(201).json(product);
+    return res
+      .status(201)
+      .json({ message: "Product created", product: result });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  res.redirect("/");
 };
 
-const deleteU = async (req, res) => {
+const removeUser = async (req, res) => {
   try {
     const skus = req.params.id;
     await deleteUser(id);
@@ -50,7 +52,6 @@ const deleteU = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  res.redirect("/");
 };
 
-module.exports = { indexU, showU, createU, deleteU };
+module.exports = { listUsers, listUser, addNewUser, removeUser };

@@ -1,13 +1,17 @@
-# Logs
-logs
+*.git
+*.gitignore
+*.vscode
+*logs
 *.log
-npm-debug.log*
-
-# production
-/build
-
-.env
-.env*.local
-.env*.prod
-/output
-
+*npm-debug.log*
+*build
+*node_modules
+*.dockerignore
+*Dockerfile
+*dist
+*.env
+*.env*.local
+*.env*.prod
+*output
+*.eslintrc*
+*.test.js

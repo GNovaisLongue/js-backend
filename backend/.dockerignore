@@ -1,1 +1,17 @@
+.git
+.gitignore
+.vscode
+logs
+*.log
+npm-debug.log*
+/build
 /node_modules
+.dockerignore
+Dockerfile
+dist
+.env
+.env*.local
+.env*.prod
+/output
+*.eslintrc*
+*.test.js
